@@ -126,10 +126,12 @@ export default {
     const isVisible = ref(false);
     const formIsValid = ref(true);
 
+    // 正規表達式驗證input資料
     const namesRule = /^[\u4e00-\u9fa5]+$|^[a-zA-Z\s]+$/;
     const passwordRule = /[a-zA-Z0-9]{8,}/;
     const atLeastOneNumberRule = /[0-9]/;
 
+    // input在blur後狀態處理
     const clearValidity = (input) => {
       input.isValid = true;
       if (password.value.val === "") {
@@ -141,10 +143,12 @@ export default {
       password.value.isFocused = true;
     };
 
+    // toggle password
     const toggleVisibility = () => {
       isVisible.value = !isVisible.value;
     };
 
+    // 監聽password input的值是否有包含1個數字
     watch(
       () => password.value.val,
       (newVal) => {
@@ -156,6 +160,7 @@ export default {
       }
     );
 
+    // 監聽password input的值是否達到8個位元長度
     watch(
       () => password.value.val,
       (newVal) => {
@@ -167,6 +172,7 @@ export default {
       }
     );
 
+    // 驗證表單
     const validateForm = () => {
       formIsValid.value = true;
       if (!namesRule.test(firstName.value.val)) {
@@ -191,6 +197,7 @@ export default {
       }
     };
 
+    // 表單送出
     const submitForm = () => {
       validateForm();
 
@@ -352,6 +359,7 @@ export default {
       background: #f0f3fd;
     }
 
+    // 利用Placeholder-shown在輸入資料及獲得Focus時Label向上移動
     &:not(:placeholder-shown) + .label {
       color: #757575;
       transform: translate3d(0, -12px, 0) scale(0.75);
@@ -367,6 +375,7 @@ export default {
     }
   }
 
+  // 將預設checkbox隱藏並用pseudo-element客製出樣式
   input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;

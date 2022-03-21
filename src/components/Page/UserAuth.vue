@@ -24,6 +24,8 @@
           <p class="title__text">Or use your email for registration</p>
           <div class="title__hori-line"></div>
         </div>
+
+        <!-- Registration component -->
         <registration-form></registration-form>
       </div>
     </section>
