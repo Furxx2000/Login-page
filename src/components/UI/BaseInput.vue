@@ -77,9 +77,13 @@ export default {
 
         // 判斷輸入密碼
         if (val.length >= truePassword.value.length) {
-          truePassword.value += val.slice(-1);
+          truePassword.value = truePassword.value.trim() + val.slice(-1);
         } else {
           truePassword.value = truePassword.value.substr(0, val.length);
+        }
+
+        if (truePassword.value === "") {
+          truePassword.value += " ";
         }
 
         // 將input值轉成星號
@@ -179,7 +183,7 @@ input {
 }
 
 .password__input {
-  padding: 16px 12px;
+  padding: 20px 12px 16px 12px;
 }
 
 .password__covered {
