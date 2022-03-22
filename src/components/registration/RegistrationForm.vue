@@ -1,88 +1,90 @@
 <template>
   <form @submit.prevent="submitForm">
+    <!-- FullName section start -->
     <div class="name">
+      <!-- FirstName input -->
       <div class="form-control">
-        <input
+        <base-input
+          id="first-name"
           type="text"
-          id="firstname"
-          :class="{ invalid: !firstName.isValid }"
-          v-model.trim="firstName.val"
-          placeholder="&nbsp;"
-          autocomplete="off"
-          @blur="clearValidity(firstName)"
-        />
-        <label for="firstname" class="label">First Name</label>
+          @entered-term="updateEnteredTerm"
+          @clear-validity="clearValidity"
+          @get-focus="setFocus"
+          :input-name="firstName"
+          :isValid="firstName.isValid"
+          :val="firstName.val"
+          :label="'First name'"
+        ></base-input>
       </div>
 
+      <!-- LastName input -->
       <div class="form-control">
-        <input
+        <base-input
+          id="last-name"
           type="text"
-          id="lastname"
-          :class="{ invalid: !lastName.isValid }"
-          v-model.trim="lastName.val"
-          placeholder="&nbsp;"
-          autocomplete="off"
-          @blur="clearValidity(lastName)"
-        />
-        <label for="lastname" class="label">Last Name</label>
+          @entered-term="updateEnteredTerm"
+          @clear-validity="clearValidity"
+          @get-focus="setFocus"
+          :input-name="lastName"
+          :isValid="lastName.isValid"
+          :val="lastName.val"
+          :label="'Last name'"
+        ></base-input>
       </div>
     </div>
+    <!-- FullName section end -->
 
+    <!-- E-mail Input -->
     <div class="form-control">
-      <input
-        type="email"
+      <base-input
         id="email"
-        :class="{ invalid: !email.isValid }"
-        v-model.trim="email.val"
-        placeholder="&nbsp;"
-        autocomplete="off"
-        @blur="clearValidity(email)"
-      />
-      <label for="email" class="label">E-mail</label>
+        type="email"
+        @entered-term="updateEnteredTerm"
+        @clear-validity="clearValidity"
+        @get-focus="setFocus"
+        :input-name="email"
+        :isValid="email.isValid"
+        :val="email.val"
+        :label="'E-mail'"
+      ></base-input>
     </div>
 
+    <!-- Password Input -->
     <div class="form-control">
-      <input
-        type="password"
+      <base-input
         id="password"
-        class="password__input"
-        :class="{ invalid: !password.isValid }"
-        v-model.trim="password.val"
-        placeholder="&nbsp;"
-        autocomplete="off"
-        @blur="clearValidity(password)"
-        @focus="setFocus"
-      />
-      <label for="password" class="label">Password</label>
-      <span v-if="isVisible" class="password__covered">{{ password.val }}</span>
+        type="text"
+        :childClass="'password__input'"
+        @entered-term="updateEnteredTerm"
+        @clear-validity="clearValidity"
+        @get-focus="setFocus"
+        @check-visibility="toggleVisibility"
+        :input-name="password"
+        :isValid="password.isValid"
+        :val="password.val"
+        :label="'Password'"
+      ></base-input>
 
-      <svg-icon
-        @click="toggleVisibility"
-        icon-class="visibility"
-        :class="{ isActive: isVisible }"
-      ></svg-icon>
+      <!-- Password checks -->
       <div v-if="password.isFocused" class="password__check">
-        <base-check>
-          <svg-icon
-            icon-class="check_circle"
-            :class="{ isActive: password.isLengthActive }"
-          ></svg-icon>
-          <span :class="{ isActive: password.isLengthActive }"
-            >8 Characters min</span
-          >
-        </base-check>
-        <base-check>
-          <svg-icon
-            icon-class="check_circle"
-            :class="{ isActive: password.isOneNumberActive }"
-          ></svg-icon>
-          <span :class="{ isActive: password.isOneNumberActive }"
-            >One number</span
-          >
-        </base-check>
+        <base-passwordCheck
+          class="check-badge"
+          :icon="'check_circle'"
+          :is-length-active="password.isLengthActive"
+          :isSmall="true"
+          >8 Characters min</base-passwordCheck
+        >
+        <base-passwordCheck
+          class="check-badge"
+          :icon="'check_circle'"
+          :is-one-number-active="password.isOneNumberActive"
+          :isSmall="true"
+          >One number</base-passwordCheck
+        >
       </div>
     </div>
 
+    <!-- Agreement checkbox -->
     <div class="form-control agreement">
       <input
         type="checkbox"
@@ -95,10 +97,14 @@
         Service and Notification settings.
       </p>
     </div>
-    <base-button class="submit" mode="filled">
-      <p>Create an Free Account</p>
+
+    <!-- Create account button -->
+    <base-button class="create-account" mode="filled">
+      <p>Create an Free Account !</p>
     </base-button>
-    <div class="login">
+
+    <!-- Already have an account notification -->
+    <div class="already-have-account">
       <p>Already have an account?</p>
       <base-button link to="/login" class="login__link" mode="flat"
         >Log in</base-button
@@ -112,45 +118,57 @@ import { ref, watch } from "vue";
 
 export default {
   setup() {
+    // User資料ref
     const firstName = ref({ val: "", isValid: true });
     const lastName = ref({ val: "", isValid: true });
     const email = ref({ val: "", isValid: true });
     const password = ref({
       val: "",
+      trueVal: "",
       isValid: true,
       isFocused: false,
       isLengthActive: false,
       isOneNumberActive: false,
+      isVisible: false,
     });
     const agreement = ref({ val: null, isValid: true });
-    const isVisible = ref(false);
     const formIsValid = ref(true);
 
-    // 正規表達式驗證input資料
-    const namesRule = /^[\u4e00-\u9fa5]+$|^[a-zA-Z\s]+$/;
-    const passwordRule = /[a-zA-Z0-9]{8,}/;
-    const atLeastOneNumberRule = /[0-9]/;
+    // 透過BaseInput component得到資料
+    const updateEnteredTerm = (data) => {
+      if (data.trueVal) {
+        data.selectedInput.value.trueVal = data.trueVal;
+      }
 
-    // input在blur後狀態處理
+      data.selectedInput.value.val = data.val;
+    };
+
+    // Input在blur後清除紅外框
     const clearValidity = (input) => {
-      input.isValid = true;
+      input.value.isValid = true;
+
       if (password.value.val === "") {
         password.value.isFocused = false;
       }
     };
 
-    const setFocus = () => {
-      password.value.isFocused = true;
+    // Input獲得focus時將紅框消除
+    const setFocus = (selectedInput) => {
+      selectedInput.value.isValid = true;
+
+      if (selectedInput.value?.isFocused === false) {
+        password.value.isFocused = true;
+      }
     };
 
-    // toggle password
-    const toggleVisibility = () => {
-      isVisible.value = !isVisible.value;
+    // Toggle是否能看見密碼
+    const toggleVisibility = (bool) => {
+      password.value.isVisible = bool;
     };
 
-    // 監聽password input的值是否有包含1個數字
+    // 監聽password的值是否有包含1個數字
     watch(
-      () => password.value.val,
+      () => password.value.trueVal,
       (newVal) => {
         if (atLeastOneNumberRule.test(newVal)) {
           password.value.isOneNumberActive = true;
@@ -160,7 +178,7 @@ export default {
       }
     );
 
-    // 監聽password input的值是否達到8個位元長度
+    // 監聽password的值是否達到8個位元長度
     watch(
       () => password.value.val,
       (newVal) => {
@@ -172,28 +190,38 @@ export default {
       }
     );
 
+    // 正規表達式驗證input資料
+    const namesRule = /^[\u4e00-\u9fa5]+$|^[a-zA-Z\s]+$/;
+    const passwordRule = /[a-zA-Z0-9]{8,}/;
+    const atLeastOneNumberRule = /[0-9]/;
+
     // 驗證表單
     const validateForm = () => {
       formIsValid.value = true;
       if (!namesRule.test(firstName.value.val)) {
         firstName.value.isValid = false;
         formIsValid.value = false;
+        console.log("First name is not correct.");
       }
       if (!namesRule.test(lastName.value.val)) {
         lastName.value.isValid = false;
         formIsValid.value = false;
+        console.log("Last name is not correct.");
       }
-      if (!passwordRule.test(password.value.val)) {
+      if (!passwordRule.test(password.value.trueVal)) {
         password.value.isValid = false;
         formIsValid.value = false;
+        console.log("Password is not correct.");
       }
       if (!email.value.val.includes("@")) {
         email.value.isValid = false;
         formIsValid.value = false;
+        console.log("E-mail is not correct.");
       }
       if (!agreement.value.val) {
         agreement.value.isValid = false;
         formIsValid.value = false;
+        console.log("Agreement has not confirm yet.");
       }
     };
 
@@ -214,7 +242,7 @@ export default {
       email,
       password,
       agreement,
-      isVisible,
+      updateEnteredTerm,
       toggleVisibility,
       submitForm,
       clearValidity,
@@ -238,11 +266,12 @@ export default {
   gap: 14px;
 }
 
-.submit {
+.create-account {
   width: 100%;
 }
 
-.login {
+// Already have account notification樣式
+.already-have-account {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -266,116 +295,23 @@ export default {
   }
 }
 
+// Form樣式
 .form-control {
   position: relative;
   margin-bottom: 0.8rem;
   margin-top: auto;
   overflow: hidden;
 
-  .password__input {
-    padding: 16px 12px !important;
-  }
-
-  .password__covered {
-    position: absolute;
-    top: 36px;
-    left: 14px;
-    font-size: 12px;
-  }
-
+  // Password check樣式
   .password__check {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
+    justify-content: flex-start;
     padding: 5px 3px;
-
-    .base-check {
-      margin-right: 1rem;
-
-      .svg-icon {
-        width: 14px;
-        height: 14px;
-        fill: #ababab;
-        margin-right: 1px;
-
-        &.isActive {
-          fill: #4ae7a5;
-        }
-      }
-
-      span {
-        color: #ababab;
-        font-size: 12px;
-        font-weight: 500;
-
-        &.isActive {
-          color: black;
-        }
-      }
-    }
+    gap: 5px;
   }
 
-  .label {
-    position: absolute;
-    top: 19px;
-    left: 14px;
-    font-size: 16px;
-    color: #757575;
-    font-weight: 500;
-    transform-origin: 0 0;
-    transform: translate3d(0, 0, 0);
-    transition: all 0.2s ease;
-    pointer-events: none;
-  }
-
-  .icon-visibility {
-    position: absolute;
-    fill: #ababab;
-    top: 19px;
-    right: 18px;
-    cursor: pointer;
-
-    &.isActive {
-      fill: #3c71ff;
-    }
-  }
-
-  input:not(input[type="checkbox"]) {
-    -webkit-appearance: none;
-    appearance: none;
-    display: block;
-    width: 100%;
-    height: 55px;
-    font: inherit;
-    font-size: 16px;
-    font-weight: 500;
-    border: 1px solid transparent;
-    background: #f1f5ff;
-    border-radius: 5px;
-    padding: 16px 12px 0 12px;
-    transition: all 0.15s ease;
-
-    &:hover {
-      background: #f0f3fd;
-    }
-
-    // 利用Placeholder-shown在輸入資料及獲得Focus時Label向上移動
-    &:not(:placeholder-shown) + .label {
-      color: #757575;
-      transform: translate3d(0, -12px, 0) scale(0.75);
-    }
-
-    &:focus {
-      background: #e9edf8;
-      outline: none;
-
-      + .label {
-        transform: translate3d(0, -12px, 0) scale(0.75);
-      }
-    }
-  }
-
-  // 將預設checkbox隱藏並用pseudo-element客製出樣式
+  // 隱藏預設checkbox樣式
   input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
@@ -391,6 +327,7 @@ export default {
     justify-content: center;
   }
 
+  // 新增Pseudo element樣式設定
   input[type="checkbox"]::after {
     font-family: "Font Awesome 6 free";
     font-weight: 900;
@@ -417,10 +354,6 @@ export default {
     font-size: 13px;
     color: #757575;
     line-height: 16px;
-  }
-
-  .invalid {
-    border: 1px solid #d93025 !important;
   }
 }
 </style>
