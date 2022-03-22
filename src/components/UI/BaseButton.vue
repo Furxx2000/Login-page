@@ -43,6 +43,7 @@ a {
   background: #ffffff;
   border: 1px solid rgba(60, 112, 255, 0.5);
   border-radius: 5px;
+  transition: all 0.15s ease;
 }
 
 a:hover,
