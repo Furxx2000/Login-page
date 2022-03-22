@@ -45,6 +45,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// 新增small, isActive讓svg圖比預設樣式更小
 .svg-icon.small {
   width: 14px;
   height: 14px;

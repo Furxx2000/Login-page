@@ -53,6 +53,7 @@ button:active {
   background: #3c71ff;
 }
 
+// 透過props mode有flat, filled兩種樣式
 .flat {
   background: transparent;
   border: none;

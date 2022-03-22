@@ -201,27 +201,22 @@ export default {
       if (!namesRule.test(firstName.value.val)) {
         firstName.value.isValid = false;
         formIsValid.value = false;
-        console.log("First name is not correct.");
       }
       if (!namesRule.test(lastName.value.val)) {
         lastName.value.isValid = false;
         formIsValid.value = false;
-        console.log("Last name is not correct.");
       }
       if (!passwordRule.test(password.value.trueVal)) {
         password.value.isValid = false;
         formIsValid.value = false;
-        console.log("Password is not correct.");
       }
       if (!email.value.val.includes("@")) {
         email.value.isValid = false;
         formIsValid.value = false;
-        console.log("E-mail is not correct.");
       }
       if (!agreement.value.val) {
         agreement.value.isValid = false;
         formIsValid.value = false;
-        console.log("Agreement has not confirm yet.");
       }
     };
 

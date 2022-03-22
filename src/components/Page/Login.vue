@@ -1,11 +1,14 @@
 <template>
   <base-card>
+    <!-- 頂部上一頁 -->
     <section class="previous-page">
       <base-button link class="previous-page__link" mode="flat">
         <svg-icon icon-class="arrow_back"></svg-icon>
         <p class="previous-page__text">Back</p>
       </base-button>
     </section>
+
+    <!-- Sign up with google or facebook -->
     <section class="create-account">
       <h2>Start from free</h2>
       <h1>Create an account</h1>

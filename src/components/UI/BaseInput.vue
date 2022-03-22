@@ -1,4 +1,5 @@
 <template>
+  <!-- Input通用樣式 -->
   <input
     :id="id"
     :type="type"
@@ -49,7 +50,6 @@ export default {
       type: Object,
       required: true,
     },
-
     isValid: {
       type: Boolean,
       required: true,
@@ -68,36 +68,46 @@ export default {
     let val;
     const truePassword = ref("");
 
+    // 將input值儲存後emit到父層
     const enteredTerm = (e) => {
+      // 判斷為password或是其他類型input值
       if (props.id === "password") {
+        // 獲取input值
         val = e.target.value;
 
+        // 判斷輸入密碼
         if (val.length >= truePassword.value.length) {
           truePassword.value += val.slice(-1);
         } else {
           truePassword.value = truePassword.value.substr(0, val.length);
         }
 
+        // 將input值轉成星號
         e.target.value = val.replace(/./g, "*");
 
+        // Emit出去
         context.emit("entered-term", {
           val: e.target.value,
           trueVal: truePassword.value,
           selectedInput,
         });
       } else {
+        // emit出去除了password外的input值
         context.emit("entered-term", { val: e.target.value, selectedInput });
       }
     };
 
+    // Emit哪個input需要進行blur
     const clearValidity = () => {
       context.emit("clear-validity", selectedInput);
     };
 
+    // Emit哪個input需要進行focus
     const getFocus = () => {
       context.emit("get-focus", selectedInput);
     };
 
+    // Emit isVisible判斷是否隱藏密碼
     const checkVisibility = () => {
       context.emit("check-visibility", !selectedInput.value.isVisible);
     };
@@ -115,6 +125,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// Input中 文字樣式
 .label {
   position: absolute;
   top: 19px;
