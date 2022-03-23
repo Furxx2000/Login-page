@@ -1,12 +1,7 @@
 <template>
   <base-card>
     <!-- 頂部上一頁 -->
-    <section class="previous-page">
-      <base-button link class="previous-page__link" mode="flat">
-        <svg-icon icon-class="arrow_back"></svg-icon>
-        <p class="previous-page__text">Back</p>
-      </base-button>
-    </section>
+    <the-previous-page-button>Back</the-previous-page-button>
 
     <!-- Sign up with google or facebook -->
     <section class="create-account">
@@ -36,34 +31,16 @@
 </template>
 
 <script>
-import RegistrationForm from "../registration/RegistrationForm.vue";
+import RegistrationForm from "../Layout/RegistrationForm.vue";
+import ThePreviousPageButton from "../Layout/ThePreviousPageButton.vue";
 
 export default {
-  components: { RegistrationForm },
+  components: { RegistrationForm, ThePreviousPageButton },
   setup() {},
 };
 </script>
 
 <style lang="scss" scoped>
-.previous-page {
-  display: flex;
-  align-items: center;
-
-  .flat:hover,
-  .flat:active {
-    .previous-page__text {
-      font-weight: 700;
-    }
-  }
-
-  &__text {
-    display: inline-block;
-    font-size: 14px;
-    font-weight: 600;
-    margin: 0;
-  }
-}
-
 .create-account {
   max-width: 70%;
   margin: 0 auto;
