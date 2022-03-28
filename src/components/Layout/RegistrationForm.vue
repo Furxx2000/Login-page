@@ -328,29 +328,34 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
 
-  // 新增Pseudo element樣式設定
-  input[type="checkbox"]::after {
-    font-family: "Font Awesome 6 free";
-    font-weight: 900;
-    content: "\f00c";
-    font-size: 15px;
-    color: #3c71ff;
-    display: none;
-  }
+    // 新增Pseudo element樣式設定
+    &::after {
+      font-family: "Font Awesome 6 free";
+      font-weight: 900;
+      content: "\f00c";
+      font-size: 15px;
+      color: #3c71ff;
+      display: none;
+    }
 
-  input[type="checkbox"]:hover {
-    background-color: #797979;
-  }
+    &:hover {
+      background-color: #797979;
+    }
 
-  input[type="checkbox"]:checked {
-    background-color: #ffffff;
-    border: 1.5px solid black;
-  }
+    &:checked {
+      background-color: #ffffff;
+      border: 1.5px solid black;
+    }
 
-  input[type="checkbox"]:checked::after {
-    display: block;
+    &:checked {
+      background-color: #ffffff;
+      border: 1.5px solid black;
+    }
+
+    &:checked::after {
+      display: block;
+    }
   }
 
   .agreement__text {
