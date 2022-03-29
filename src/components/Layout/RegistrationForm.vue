@@ -348,11 +348,6 @@ export default {
       border: 1.5px solid black;
     }
 
-    &:checked {
-      background-color: #ffffff;
-      border: 1.5px solid black;
-    }
-
     &:checked::after {
       display: block;
     }
