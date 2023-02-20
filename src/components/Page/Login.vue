@@ -8,11 +8,11 @@
       <h2>Start from free</h2>
       <h1>Create an account</h1>
       <div class="sign-up">
-        <base-button link to="/login/google" class="sign-up__link">
+        <base-button link to="/Login-page/login/google" class="sign-up__link">
           <svg-icon icon-class="google"></svg-icon>
           <span class="sign-up__text">Sign up with Google</span>
         </base-button>
-        <base-button link to="/login/facebook" class="sign-up__link">
+        <base-button link to="/Login-page/login/facebook" class="sign-up__link">
           <svg-icon icon-class="facebook"></svg-icon>
           <span class="sign-up__text">Sign up with Facebook</span>
         </base-button>

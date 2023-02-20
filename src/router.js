@@ -1,26 +1,29 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Login from "./components/Page/Login.vue";
-import LoggedInSuccessfully from "./components/Page/LoggedInSuccessfully.vue";
+import { createRouter, createWebHistory } from 'vue-router';
+import Login from './components/Page/Login.vue';
+import LoggedInSuccessfully from './components/Page/LoggedInSuccessfully.vue';
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: "/", redirect: "/login" },
+    { path: '/Login-page', redirect: '/Login-page/login' },
     {
-      path: "/login",
+      path: '/Login-page/login',
       component: Login,
     },
-    { path: "/loggedInSuccessfully", component: LoggedInSuccessfully },
     {
-      path: "/login/google",
+      path: '/Login-page/loggedInSuccessfully',
+      component: LoggedInSuccessfully,
+    },
+    {
+      path: '/Login-page/login/google',
       beforeEnter() {
-        window.location.href = "https://accounts.google.com/";
+        window.location.href = 'https://accounts.google.com/';
       },
     },
     {
-      path: "/login/facebook",
+      path: '/Login-page/login/facebook',
       beforeEnter() {
-        window.location.href = "https://zh-tw.facebook.com/";
+        window.location.href = 'https://zh-tw.facebook.com/';
       },
     },
   ],

@@ -1,6 +1,6 @@
 <template>
   <section class="previous-page">
-    <base-button link to="/login" class="previous-page__link" mode="flat">
+    <base-button link to="/Login-page/login" class="previous-page__link" mode="flat">
       <svg-icon icon-class="arrow_back"></svg-icon>
       <p class="previous-page__text"><slot></slot></p>
     </base-button>

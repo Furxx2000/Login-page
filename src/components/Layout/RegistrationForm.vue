@@ -108,7 +108,7 @@
       <p>Already have an account?</p>
       <base-button
         link
-        to="/login"
+        to="/Login-page/login"
         class="already-have-account__link"
         mode="flat"
         >Log in</base-button
@@ -236,7 +236,7 @@ export default {
         return;
       }
 
-      router.push("/loggedInSuccessfully");
+      router.push("/Login-page/loggedInSuccessfully");
     };
 
     return {
