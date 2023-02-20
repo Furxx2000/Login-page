@@ -5,7 +5,7 @@ function resolve(dir) {
 }
 
 module.exports = {
-  publicPath: '/Login-page/',
+  publicPath: '/login-page/',
   chainWebpack: (config) => {
     // 先刪除預設的svg配置
     config.module.rule('svg').exclude.add(resolve('src/assets/icon')).end();
