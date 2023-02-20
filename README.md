@@ -1,5 +1,3 @@
-# trend_micro_frontend_develope_task
-
 ## Project setup
 ```
 npm install
